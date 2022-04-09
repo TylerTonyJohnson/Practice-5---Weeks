@@ -1,0 +1,28 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #223344;
+    border: solid purple;
+    height: 100vmin;
+    margin: 0;
+}
+
+#week-grid {
+    display: inline-grid;
+    gap: 10px;
+    border: solid green;
+    grid-auto-flow: column;
+}
+
+.week {
+    --week-size: 16px;
+
+    width: var(--week-size);
+    height: var(--week-size);
+
+    background-color: white;
+    border-radius: 50%;
+    /* border: solid red; */
+}

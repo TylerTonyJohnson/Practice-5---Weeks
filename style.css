@@ -1,28 +1,66 @@
 *, *::before, *::after {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size:xx-small;
 }
 
 body {
     background-color: #223344;
-    border: solid purple;
-    height: 100vmin;
-    margin: 0;
+    /* border: solid purple; */
+    /* height: 100vmin; */
+    /* margin: 0; */
 }
 
 #week-grid {
+    --sub-gap: 1.5fr;
     display: inline-grid;
-    gap: 10px;
-    border: solid green;
-    grid-auto-flow: column;
+    width: 90%;
+    margin: 5%;
+    gap: 5px;
+    /* border: solid green; */
+    justify-items: end;
+    align-items: flex-end;
+    grid-template-columns: 
+        repeat(4, 1fr) 
+        repeat(12, var(--sub-gap) 1fr 1fr 1fr);
+    grid-template-rows: 
+        repeat(10, 1fr)
+        repeat(6, var(--sub-gap) 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr) 
+        var(--sub-gap) 
+        repeat(6, 1fr);
+
+    counter-reset: week-number;
 }
 
 .week {
-    --week-size: 16px;
+    --color: teal;
+    display: block;
+    background-color: var(--color);
+    border: solid var(--color) 2px;
+    height: 10px;
+    width: 10px;
+    /* border-radius: 50%; */
 
-    width: var(--week-size);
-    height: var(--week-size);
-
-    background-color: white;
-    border-radius: 50%;
-    /* border: solid red; */
+    counter-increment: week-number;
 }
+
+.week:hover {
+    filter: brightness(150%);
+    transform: scale(2);
+    transition: all ease 0.125s;
+}
+
+/* .center {
+    aspect-ratio: 1;
+}
+
+.left {
+    aspect-ratio: 2;
+}
+
+.top {
+    aspect-ratio: 1/2;
+} */
+

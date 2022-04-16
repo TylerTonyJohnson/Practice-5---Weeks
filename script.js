@@ -18,11 +18,11 @@ function addWeek() {
     const grid = document.getElementById("week-grid");
     const week = document.createElement("div");
 
-    week.id = 
+    // week.id = 
     week.classList.add("week");
-    week.classList.add("center");
+    // week.classList.add("center");
 
-    week.style.setProperty("--color", "orange");
+    // week.style.setProperty("--color", "orange");
 
     grid.appendChild(week);
 }

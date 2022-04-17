@@ -21,6 +21,7 @@ function addWeek(i) {
     week.id = i;
     week.classList.add("week");
 
+    // Calculate cell shape
     let left, right, top, bot = false;
 
     if (week.id % 4 === 0 && week.id % 52 !== 0) left = true;
@@ -28,24 +29,39 @@ function addWeek(i) {
     if (Math.ceil(week.id / 52) % 10 === 0) top = true;
     if ((Math.ceil(week.id / 52) % 10 === 1) && (Math.ceil(week.id / 52) !== 1)) bot = true; 
 
-    // Set anchor
+    // Set anchors
+
+        // Default
+    if (!left && !right) week.classList.add("left");
+    if (!top && !bot) week.classList.add("top");
+
+        // Special
     if (left) week.classList.add("left");
     if (right) week.classList.add("right");
     if (top) week.classList.add("top");
     if (bot) week.classList.add("bottom");
 
-    // Set aspect Ratio
+    // Set aspect Ratio based on cell shape
     switch (true) {
+        // Small square
+        case (!(left || right) && !(top || bot)):
+            week.classList.add("square");
+            break;
+        // Short rectangle
         case ((left || right) && !(top || bot)):
             week.classList.add("short");
             break;
+        // Tall rectangle
         case (!(left || right) && (top || bot)):
             week.classList.add("tall");
             break;
-        default:
-            week.classList.add("square");
+        // Big square
+        case ((left || right) && (top || bot)):
+            week.classList.add("big-square");
+            break;
     }
 
+    // Add cell to grid
     grid.appendChild(week);
 }
 
@@ -82,7 +98,7 @@ function animate() {
 function handleLeftClick() {
     // addWeek();
     animating = true;
-    animate();
+    // animate();
 }
 
 //Right click

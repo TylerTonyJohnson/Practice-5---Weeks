@@ -19,7 +19,6 @@ body {
     width: 90%;
     margin: 5%;
     gap: 1px;
-    /* aspect-ratio: 52/77; */
     /* border: solid green; */
     /* justify-items: end;
     align-items: flex-end; */
@@ -33,15 +32,6 @@ body {
         var(--sub-gap) repeat(6, 1fr);
 }
 
-/* .week:nth-child(4n) {
-    background-color: red;
-    border: solid red 1px;
-} */
-
-/* .week:not() {
-    border: solid red 1px;
-} */
-
 .week {
     --color: teal;
     position: relative;
@@ -54,42 +44,45 @@ body {
     content: "";
     position: absolute;
     background-color: orange;
-    /* aspect-ratio: 1; */
+    /* left: 20%;
+    top: 20%; */
+    width: 5px;
+    aspect-ratio: 1;
 }
 
 /* Left side */
-.week:nth-child(4n).week:not(:nth-child(52n)) {
-    background-color: red;
-    aspect-ratio: 3/2;
+.week.left::before {
+    /* background-color: red; */
+    left: 20%;
 }
 
 /* Right side */
-.week:nth-child(4n+1).week:not(:nth-child(52n+1)) {
-    background-color: green;
-    aspect-ratio: 3/2;
+.week.right::before {
+    /* background-color: green; */
+    right: 20%;
 }
 
 /* Top side */
-.week:nth-child(n+469):nth-child(-n+520),
-.week:nth-child(n+989):nth-child(-n+1040),
-.week:nth-child(n+1509):nth-child(-n+1560),
-.week:nth-child(n+2029):nth-child(-n+2080),
-.week:nth-child(n+2549):nth-child(-n+2600),
-.week:nth-child(n+3069):nth-child(-n+3120),
-.week:nth-child(n+3589):nth-child(-n+3640) {
-    background-color: purple;
-    aspect-ratio: 2/3;
+.week.top::before {
+    /* background-color: purple; */
+    top: 20%;
 }
 
 /* Bottom side */
-.week:nth-child(n+521):nth-child(-n+572),
-.week:nth-child(n+1041):nth-child(-n+1092),
-.week:nth-child(n+1561):nth-child(-n+1612),
-.week:nth-child(n+2081):nth-child(-n+2132),
-.week:nth-child(n+2601):nth-child(-n+2652),
-.week:nth-child(n+3121):nth-child(-n+3172),
-.week:nth-child(n+3641):nth-child(-n+3692) {
-    background-color: limegreen;
+.week.bottom::before {
+    /* background-color: limegreen; */
+    bottom: 20%;
+}
+
+.week.square {
+    aspect-ratio: 1;
+}
+
+.week.short {
+    aspect-ratio: 3/2;
+}
+
+.week.tall {
     aspect-ratio: 2/3;
 }
 

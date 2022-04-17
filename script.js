@@ -7,22 +7,44 @@ const weekProgress = 136;
 const weekCount = 4004;
 let animating = false;
 
-for (let i = 0; i < weekCount; i++) {
+for (let i = 1; i <= weekCount; i++) {
 
-    addWeek();
+    addWeek(i);
 }
 
 animate();
 
-function addWeek() {
+function addWeek(i) {
     const grid = document.getElementById("week-grid");
     const week = document.createElement("div");
 
-    // week.id = 
+    week.id = i;
     week.classList.add("week");
-    // week.classList.add("center");
 
-    // week.style.setProperty("--color", "orange");
+    let left, right, top, bot = false;
+
+    if (week.id % 4 === 0 && week.id % 52 !== 0) left = true;
+    if (week.id % 4 === 1 && week.id % 52 !== 1) right = true;
+    if (Math.ceil(week.id / 52) % 10 === 0) top = true;
+    if ((Math.ceil(week.id / 52) % 10 === 1) && (Math.ceil(week.id / 52) !== 1)) bot = true; 
+
+    // Set anchor
+    if (left) week.classList.add("left");
+    if (right) week.classList.add("right");
+    if (top) week.classList.add("top");
+    if (bot) week.classList.add("bottom");
+
+    // Set aspect Ratio
+    switch (true) {
+        case ((left || right) && !(top || bot)):
+            week.classList.add("short");
+            break;
+        case (!(left || right) && (top || bot)):
+            week.classList.add("tall");
+            break;
+        default:
+            week.classList.add("square");
+    }
 
     grid.appendChild(week);
 }

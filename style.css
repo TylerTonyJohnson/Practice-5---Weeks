@@ -1,112 +1,169 @@
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Courier New', Courier, monospace;
-    font-size:xx-small;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Courier New", Courier, monospace;
+  /* font-size:xx-small; */
 }
 
+#user-display {
+  display: flex;
+  /* padding: 2em; */
+  /* background-color: aquamarine; */
+  /* border: solid green 2px; */
+  
+}
+
+.display-text {
+  background-color: white;
+  margin: auto;
+}
+
+
 body {
-    background-color: #223344;
-    width: 100vmin;
+  --background-color: #223344;
+  background-color: var(--background-color);
+  width: 100vmin;
+  margin: auto;
+  /* border: solid green 2px; */
 }
 
 #week-grid {
-    --gap-ratio: 1.25;
-    --sub-gap: 1.25fr;
-    --square-padding: 10%;
-    display: grid;
-    width: 90%;
-    margin: 5%;
-    grid-template-columns:
-        repeat(3, 1fr) var(--sub-gap)
-        repeat(11, var(--sub-gap) 1fr 1fr var(--sub-gap))
-        var(--sub-gap) repeat(3, 1fr);
-    grid-template-rows:
-        repeat(9, 1fr) var(--sub-gap)
-        repeat(6, var(--sub-gap) 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr var(--sub-gap)) 
-        var(--sub-gap) repeat(6, 1fr);
+  --gap-ratio: 1.25;
+  --sub-gap: 1.25fr;
+  --square-padding: 10%;
+  display: grid;
+  width: 90%;
+  margin: 5%;
+  grid-template-columns:
+    repeat(3, 1fr) var(--sub-gap)
+    repeat(11, var(--sub-gap) 1fr 1fr var(--sub-gap))
+    var(--sub-gap) repeat(3, 1fr);
+  grid-template-rows:
+    repeat(9, 1fr) var(--sub-gap)
+    repeat(6, var(--sub-gap) 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr var(--sub-gap))
+    var(--sub-gap) repeat(6, 1fr);
 }
 
+.week-slot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /* background-color: blueviolet; */
+  /* border: solid red 1px; */
+}
+
+/* Square format */
 .week {
-    position: relative;
-    /* border: solid red 1px; */
+  --box-color: #ffd;
+  position: absolute;
+  pointer-events: none;
+  /* background-color: magenta; */
+  aspect-ratio: 1;
+  border-radius: 15%;
+  border: solid var(--box-color) 1px;
+  transition: background-color 0.1s ease-out;
+  scale: 1;
 }
 
-.week::selection {
-    
-}
-
-.week::before {
-    content: "";
-    position: absolute;
-    background-color: rgb(204, 196, 121);
-    aspect-ratio: 1;
-    border-radius: 15%;
-    /* border: solid teal 1px; */
+.week.filled {
+  background-color: white;
 }
 
 /* Left side */
-.week.left::before {
-    /* background-color: red; */
+.week.left {
     left: var(--square-padding);
 }
 
 /* Right side */
-.week.right::before {
-    /* background-color: green; */
+.week.right {
     right: var(--square-padding);
 }
 
 /* Top side */
-.week.top::before {
-    /* background-color: purple; */
+.week.top {
     top: var(--square-padding);
 }
 
 /* Bottom side */
-.week.bottom::before {
-    /* background-color: limegreen; */
+.week.bottom {
     bottom: var(--square-padding);
 }
 
 /* Aspect ratio styles */
-.week.square {
-    aspect-ratio: 1;
+.week-slot.square,
+.week-slot.big-square {
+  aspect-ratio: 1;
 }
 
-.week.short {
-    aspect-ratio: var(--sub-gap);
+.week-slot.short {
+  aspect-ratio: var(--gap-ratio);
 }
 
-.week.tall {
-    aspect-ratio: calc(1/var(--sub-gap));
-}
-
-.week.big-square {
-    aspect-ratio: 1;
+.week-slot.tall {
+  aspect-ratio: calc(1 / var(--gap-ratio));
 }
 
 /* Anchoring styles based on aspect ratio */
-.week.square::before {
-    width: calc(100% - 2 * var(--square-padding));
+.week.square {
+  width: calc(100% - 2 * var(--square-padding));
 }
 
-.week.short::before {
-    height: calc(100% - 2 * var(--square-padding));   
+.week.short {
+  height: calc(100% - 2 * var(--square-padding));
 }
 
-.week.tall::before {
-    width: calc(100% - 2 * var(--square-padding));
+.week.tall {
+  width: calc(100% - 2 * var(--square-padding));
 }
 
-.week.big-square::before {
-    width: calc( (100% - 2 * var(--square-padding)) / var(--gap-ratio));
+.week.big-square {
+  width: calc((100% - 2 * var(--square-padding)) / var(--gap-ratio));
+}
+
+/* MOUSE EVENTS */
+.week.hovered {
+  transform: scale(1.6);
+  z-index: 2;
+  box-shadow: 1px 1px 5px black;
+  /* transition: all ease-out 0.0125s; */
+}
+
+.week.unchecked {
+  background-color: var(--background-color);
+}
+
+.checked {
+  /* background-color: var(--box-color); */
+    background-color: green;
+}
+
+/* STYLING */
+
+.week.highlight {
+  background-color: teal;
+  transition: none;
+}
+
+.week.highlight-boundary {
+  background-color: orange;
+  transition: none;
+}
+
+.week.selected {
+  background-color:cornflowerblue;
+}
+
+.tooltip {
+  position: absolute;
+  background-color: white;
+  padding: 4px;
+  border-radius: 10%;
+  border: solid black 2px;
 }
 
 
-.week:hover {
-    filter: brightness(150%);
-    transform: scale(1.5);
-    /* transition: all ease 0.125s; */
-}
+
+/* FORMATTING STUFF */

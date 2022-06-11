@@ -23,20 +23,20 @@
 
 
 body {
-  --background-color: #223344;
+  --background-color: #6D9886;
   background-color: var(--background-color);
   width: 100vmin;
   margin: auto;
   /* border: solid green 2px; */
 }
 
-#week-grid {
+#life-grid {
   --gap-ratio: 1.25;
   --sub-gap: 1.25fr;
   --square-padding: 10%;
   display: grid;
   width: 90%;
-  margin: 5%;
+  margin: auto;
   grid-template-columns:
     repeat(3, 1fr) var(--sub-gap)
     repeat(11, var(--sub-gap) 1fr 1fr var(--sub-gap))
@@ -57,19 +57,21 @@ body {
 
 /* Square format */
 .week {
-  --box-color: #ffd;
+  --box-color: #D9CAB3;
+  background-color: #484848;
   position: absolute;
   pointer-events: none;
   /* background-color: magenta; */
   aspect-ratio: 1;
   border-radius: 15%;
-  border: solid var(--box-color) 1px;
+  border: solid #484848 1px;
   transition: background-color 0.1s ease-out;
   scale: 1;
 }
 
 .week.filled {
-  background-color: white;
+  background-color: var(--box-color);
+  border-color: var(--box-color);
 }
 
 /* Left side */
@@ -144,24 +146,42 @@ body {
 
 .week.highlight {
   background-color: teal;
+  /* filter: brightness(125%); */
+  /* filter: blur(5px); */
   transition: none;
 }
 
 .week.highlight-boundary {
-  background-color: orange;
+  --highlight-boundary-color: orange;
+  /* filter: brightness(150%); */
+  background-color: var(--highlight-boundary-color);
   transition: none;
+  /* animation: color-sync 0.75s infinite linear; */
+}
+
+@keyframes color-sync {
+  0% {
+    background-color: var(--highlight-boundary-color);
+  }
+  50% {
+    background-color: red;
+  }
+  100% {
+    background-color: var(--highlight-boundary-color);
+  }
 }
 
 .week.selected {
   background-color:cornflowerblue;
 }
 
-.tooltip {
+.hover-label {
   position: absolute;
   background-color: white;
   padding: 4px;
   border-radius: 10%;
   border: solid black 2px;
+  transform: translateX(-50%);
 }
 
 

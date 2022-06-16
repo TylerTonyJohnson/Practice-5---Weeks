@@ -4,7 +4,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Courier New", Courier, monospace;
+  /* font-family: "Courier New", Courier, monospace; */
   /* font-size:xx-small; */
 }
 
@@ -24,7 +24,20 @@
 
 body {
   --background-color: #6D9886;
-  background-color: var(--background-color);
+  /* background: linear-gradient(#FFE373, #FC9C54, #FD5E53, #4B3D60, #152852, #08183A); */
+  background: linear-gradient(
+      175deg, 
+    #08183A,
+    #152852, 
+    #4B3D60 85%, 
+    #9e3f38 90%, 
+    #a86938 95%, 
+    #bda64a 100%
+  );
+  /* background-image: url("images/Moon\ Moon.jpg"); */
+  /* background-repeat: no-repeat; */
+  /* background-size: cover; */
+  /* var(--background-color); */
   width: 100vmin;
   margin: auto;
   /* border: solid green 2px; */
@@ -36,7 +49,7 @@ body {
   --square-padding: 10%;
   display: grid;
   width: 90%;
-  margin: auto;
+  margin: 5% auto 5% auto;
   grid-template-columns:
     repeat(3, 1fr) var(--sub-gap)
     repeat(11, var(--sub-gap) 1fr 1fr var(--sub-gap))
@@ -57,14 +70,14 @@ body {
 
 /* Square format */
 .week {
-  --box-color: #D9CAB3;
-  background-color: #484848;
+  --box-color: #cdceb8;
+  background-color: var(--box-color);
   position: absolute;
   pointer-events: none;
   /* background-color: magenta; */
   aspect-ratio: 1;
   border-radius: 15%;
-  border: solid #484848 1px;
+  border: solid var(--box-color) 1px;
   transition: background-color 0.1s ease-out;
   scale: 1;
 }
@@ -177,10 +190,13 @@ body {
 
 .hover-label {
   position: absolute;
-  background-color: white;
+  background-color: darkgoldenrod;
+  color: white;
+  font-weight: bold;
+  font-family: inherit;
   padding: 4px;
-  border-radius: 10%;
-  border: solid black 2px;
+  border-radius: 10px;
+  border: solid white 2px;
   transform: translateX(-50%);
 }
 

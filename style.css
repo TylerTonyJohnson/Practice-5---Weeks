@@ -107,6 +107,14 @@ body {
     bottom: var(--square-padding);
 }
 
+/* .week.wide {
+  background-color: green;
+}
+
+.week.tall {
+  border-color: orange;
+} */
+
 /* Aspect ratio styles */
 .week-slot.square,
 .week-slot.big-square {

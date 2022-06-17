@@ -40,13 +40,14 @@ class Week {
   // Set the anchoring of the week
   setAnchor = (anchorDirection = []) => {
     anchorDirection.forEach((item) => {
-      this.element.classList.add(anchorDirection);
+      this.element.classList.add(item);
     });
   };
 
   // Set the aspect ratio of the week
   setAspect = (aspectRatio = "") => {
     this.element.classList.add(aspectRatio);
+    this.weekSlot.classList.add(aspectRatio);
   };
 
 }

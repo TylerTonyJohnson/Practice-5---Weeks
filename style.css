@@ -35,10 +35,11 @@ body {
     #bda64a 100%
   );
   /* background-image: url("images/Moon\ Moon.jpg"); */
-  /* background-repeat: no-repeat; */
+  background-repeat: no-repeat;
   /* background-size: cover; */
   /* var(--background-color); */
-  width: 100vmin;
+  /* width: 100vw; */
+  /* height: 100vh; */
   margin: auto;
   /* border: solid green 2px; */
 }
@@ -206,6 +207,7 @@ body {
   border-radius: 10px;
   border: solid white 2px;
   transform: translateX(-50%);
+  pointer-events: none;
 }
 
 

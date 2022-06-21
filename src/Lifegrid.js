@@ -142,7 +142,11 @@ class LifeGrid {
         this.mouseOverTarget = event.target.firstChild;
         this.mouseOverTarget.classList.add("hovered");
         this.hoverLabel.activate();
-        this.hoverLabel.updateText(this.weekToDate(this.mouseOverTarget.id));
+        this.hoverLabel.updateText(
+          this.formatDate(
+            this.weekToDate(this.mouseOverTarget.id)
+          )
+        );
 
         // Drag behavior
         if (this.mouseDownTarget) {
@@ -243,15 +247,8 @@ class LifeGrid {
     this.mouseUpTarget = null;
   };
 
-  // Helper functions
-  weekToDate = (weekId) => {
-    const dayIndex = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-    const date = new Date(
-      this.rootDate.getTime() + (weekId - 1) * (1000 * 60 * 60 * 24 * 7)
-    );
-
-    return (
+  formatDate = (date) => {
+      return (    
       dayIndex[date.getDay()] +
       " " +
       (date.getMonth() + 1) +
@@ -260,7 +257,84 @@ class LifeGrid {
       "/" +
       date.getFullYear()
     );
+  }
+
+  // Helper functions
+  weekToDate = (weekId) => {
+  
+    // Validate weekId
+    if (weekId < 1 || weekId > this.weekCount) {
+      console.log("Error in week count")
+      return;
+    }
+    
+    // Get root date for calcs
+    const root = this.rootDate;
+
+    // Calculate the starting day of the week
+    let days = 1 + (weekId - 1) * 7;
+    
+    // Add days for fudge if needed
+    const remainder = (Math.ceil(weekId / 52) - 1);
+    console.log(days + "-" + remainder);
+
+    // Add days for leap year fudge if needed
+    
+    // Return startdate
+    const date = new Date(
+      this.rootDate.getTime() + (weekId - 1) * (1000 * 60 * 60 * 24 * 7)
+    );
+    return date;
+
+
   };
+
+  dateToWeek = (date) => {
+
+    // Take in a date
+    if (date < this.rootDate) {
+      console.log("Too early!");
+      return;
+    }
+
+    // Figure out the difference between root date and input date
+
+    // Figure out the week it should be
+
+    // Return the week
+
+
+  };
+
+  // Function to figure out if a year is a leap year (performant)
+  isLeapYear = (year) => {
+    return !(year & 3 || year & 15 && !(year % 25));
+  }
+
 }
 
 // --- ENUMERATION OBJECTS ---
+const TimeSync = {
+  DATESYNC: "date",
+  DAYSYNC: "day",
+  MONTHSYNC: "month",
+};
+
+const dayIndex = [
+  "Sun", 
+  "Mon", 
+  "Tue", 
+  "Wed", 
+  "Thu", 
+  "Fri", 
+  "Sat"
+];
+
+const Days = {
+  MON: "Monday",
+  TUE: "Tuesday",
+  WED: "Wednesday",
+  THU: "Thursday",
+  FRI: "Friday",
+  SAT: "Saturday",
+};

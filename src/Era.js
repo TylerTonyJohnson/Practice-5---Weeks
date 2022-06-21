@@ -10,8 +10,6 @@ class Era {
         this.style;
     }
 
-
-
 }
 
 

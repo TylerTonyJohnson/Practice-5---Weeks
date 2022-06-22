@@ -7,15 +7,20 @@ class LifeGrid {
     // Pass in an html element to use as the grid
     this.element = element;
     this.mouseDownTarget = null;
+
+    // Create mouse tracking stuff
     this.mouseUpTarget = null;
     this.mouseOverTarget = null;
     this.hoverLabel = new HoverLabel($("hover-label"));
+    
+    // Create data structures
     this.rootDate = new Date("February 27, 1991");
-    console.log(this.hoverLabel);
-
-    // Keep track of eras inside
     this.eras = [];
+    this.timeSync = TimeSync.YEARSYNC;
+    
+    // Setup
     this.createWeeks();
+    this.updateColors();
   }
 
   // --- METHODS ---
@@ -144,8 +149,8 @@ class LifeGrid {
         this.hoverLabel.activate();
         this.hoverLabel.updateText(
           this.formatDate(
-            this.weekToDate(this.mouseOverTarget.id)
-          )
+            this.weekToDate(this.mouseOverTarget.id, this.rootDate)
+          ) + " " + week.id
         );
 
         // Drag behavior
@@ -201,7 +206,7 @@ class LifeGrid {
 
       // Mouse move events
       week.weekSlot.onmousemove = (event) => {
-        console.log("updating position");
+        // console.log("updating position");
         this.hoverLabel.updatePosition(event.pageX, event.pageY);
       };
     }
@@ -247,6 +252,24 @@ class LifeGrid {
     this.mouseUpTarget = null;
   };
 
+  // For testing
+  updateColors = () => {
+    this.clearStyle("debug");
+    Array.from(document.getElementsByClassName("week")).forEach(week => {
+      const root = this.rootDate;
+      const time = this.weekToDate(week.id, this.rootDate);
+
+      // console.log(root.getDate(), time.getDate())
+
+      if (
+        time.getMonth() === root.getMonth()
+        && Math.abs(time.getDate() - root.getDate()) < 6
+      ) {
+        week.classList.add("debug");
+      }
+    });
+  }
+
   formatDate = (date) => {
       return (    
       dayIndex[date.getDay()] +
@@ -260,33 +283,31 @@ class LifeGrid {
   }
 
   // Helper functions
-  weekToDate = (weekId) => {
+  weekToDate = (weekId, rootDate) => {
   
     // Validate weekId
     if (weekId < 1 || weekId > this.weekCount) {
-      console.log("Error in week count")
+      // console.log("Error in week count");
       return;
     }
-    
-    // Get root date for calcs
-    const root = this.rootDate;
 
     // Calculate the starting day of the week
     let days = 1 + (weekId - 1) * 7;
     
     // Add days for fudge if needed
-    const remainder = (Math.ceil(weekId / 52) - 1);
-    console.log(days + "-" + remainder);
+    if (this.timeSync === TimeSync.YEARSYNC) {
 
-    // Add days for leap year fudge if needed
-    
-    // Return startdate
-    const date = new Date(
-      this.rootDate.getTime() + (weekId - 1) * (1000 * 60 * 60 * 24 * 7)
-    );
-    return date;
+      // Add a day per year to catch up
+      days += (Math.ceil(weekId / 52) - 1);
 
+      // Add a day for leap years
+      const firstYear = rootDate.getFullYear();
+      const currentYear = firstYear + (Math.ceil(weekId / 52) - 1);
+      days += this.countLeapYears(firstYear,currentYear);
+    }
 
+    // Return the date corresponding to the first day of the week
+    return new Date(rootDate.getTime() + (days - 1) * (1000 * 60 * 60 * 24));
   };
 
   dateToWeek = (date) => {
@@ -306,6 +327,19 @@ class LifeGrid {
 
   };
 
+  // Function to get count of leap years from root date til now.
+  countLeapYears(year1, year2) {
+    const firstYear = Math.min(year1, year2);
+    const lastYear = Math.max(year1, year2);
+
+    let leapYearCount = 0;
+    for (let i = firstYear; i < lastYear; i++) {
+      if (this.isLeapYear(i)) leapYearCount++;
+    }
+
+    return leapYearCount;
+  }
+
   // Function to figure out if a year is a leap year (performant)
   isLeapYear = (year) => {
     return !(year & 3 || year & 15 && !(year % 25));
@@ -315,8 +349,8 @@ class LifeGrid {
 
 // --- ENUMERATION OBJECTS ---
 const TimeSync = {
-  DATESYNC: "date",
-  DAYSYNC: "day",
+  YEARSYNC: "year",
+  WEEKSYNC: "week",
   MONTHSYNC: "month",
 };
 
@@ -329,6 +363,21 @@ const dayIndex = [
   "Fri", 
   "Sat"
 ];
+
+const MonthIndex = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec"
+]
 
 const Days = {
   MON: "Monday",

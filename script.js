@@ -38,6 +38,8 @@ document.onkeydown = (event) => {
 }
 
 
+
+
 const weekCount = 4004;
 let rootDate;
 
@@ -61,12 +63,7 @@ const user = new User("Tyler A Johnson", new Date("February 27, 1991"));
 
 const age = getWeeksDuration(new Date().getTime() - user.birthdate.getTime());
 
-// Create weeks
-// for (let i = 1; i <= weekCount; i++) {
-//   addWeek(i);
-// }
-
-// changeColor(schoolOne);
+// Select Options
 
 let option = document.createElement("option");
 option.value = "lifespan";
@@ -78,13 +75,37 @@ option.value = "homes";
 option.textContent = "Homes";
 $("lens-choice").add(option);
 
-function toggleIsChecked($week) {
-  if ($week.classList.contains("checked")) {
-    $week.classList.remove("checked");
-    $week.classList.add("unchecked");
-  } else if ($week.classList.contains("unchecked")) {
-    $week.classList.remove("unchecked");
-    $week.classList.add("checked");
-  }
+// Sync options
+option = document.createElement("option");
+option.value = TimeSync.WEEKSYNC;
+option.textContent = "Week Sync";
+$("time-sync").add(option);
+
+option = document.createElement("option");
+option.value = TimeSync.MONTHSYNC;
+option.textContent = "Month Sync";
+$("time-sync").add(option);
+
+option = document.createElement("option");
+option.value = TimeSync.YEARSYNC;
+option.textContent = "Year Sync";
+$("time-sync").add(option);
+
+$("time-sync").onchange = (event) => {
+  lifeGrid.timeSync = event.target.value;
+  lifeGrid.updateColors();
 }
+
+// $("time-sync").selectedIndex = 0;
+$("time-sync").value = TimeSync.YEARSYNC;
+
+// function toggleIsChecked($week) {
+//   if ($week.classList.contains("checked")) {
+//     $week.classList.remove("checked");
+//     $week.classList.add("unchecked");
+//   } else if ($week.classList.contains("unchecked")) {
+//     $week.classList.remove("unchecked");
+//     $week.classList.add("checked");
+//   }
+// }
 

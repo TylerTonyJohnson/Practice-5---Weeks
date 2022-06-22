@@ -108,6 +108,10 @@ body {
     bottom: var(--square-padding);
 }
 
+.week.debug {
+  background-color: magenta;
+}
+
 /* .week.wide {
   background-color: green;
 }

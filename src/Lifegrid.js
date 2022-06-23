@@ -287,7 +287,7 @@ class LifeGrid {
   
     // Validate weekId
     if (weekId < 1 || weekId > this.weekCount) {
-      // console.log("Error in week count");
+      console.log("Error in week count");
       return;
     }
 
@@ -310,20 +310,37 @@ class LifeGrid {
     return new Date(rootDate.getTime() + (days - 1) * (1000 * 60 * 60 * 24));
   };
 
-  dateToWeek = (date) => {
+  dateToWeek = (date, rootDate) => {
 
-    // Take in a date
-    if (date < this.rootDate) {
-      console.log("Too early!");
+    // Validate date
+    if (date < this.rootDate || date > this.weekToDate(this.weekCount, this.rootDate)) {
+      console.log("Date is out of range");
       return;
     }
 
-    // Figure out the difference between root date and input date
+    // Calculate days since the root date
+    let days = Math.floor((date.getTime() - rootDate.getTime()) / (1000 * 60 * 60 * 24));
+    console.log(days)
+    // If in YEARSYNC, adjust the dates
+    if (this.timeSync === TimeSync.YEARSYNC) {
 
-    // Figure out the week it should be
+      const firstYear = rootDate.getFullYear();
+      const currentYear = date.getFullYear();
 
-    // Return the week
+      // Subtract a day per year
+      days -= (currentYear - firstYear);
+      console.log("Subtracting - " + (currentYear - firstYear));
 
+      // Subtract a day per leap yer
+      days -= this.countLeapYears(firstYear, currentYear);
+    }
+
+    // Make sure week before is before
+
+    // Make sure week after is after
+    const weekId = Math.floor(days / 7);
+
+    return weekId;
 
   };
 
@@ -352,6 +369,7 @@ const TimeSync = {
   YEARSYNC: "year",
   WEEKSYNC: "week",
   MONTHSYNC: "month",
+  CALENDARSYNC: "calendar"
 };
 
 const dayIndex = [

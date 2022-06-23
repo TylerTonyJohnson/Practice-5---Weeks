@@ -37,27 +37,6 @@ document.onkeydown = (event) => {
 
 }
 
-
-
-
-const weekCount = 4004;
-let rootDate;
-
-// Initialize mouse events
-let mouseDown = false;
-let mouseDownTarget = null;
-
-// // Preferences
-// const hoverLabel = new HoverLabel($("hover-label"));
-// const hoverLabelOffset = 20; // pixels
-
-// // Create fake data
-// const schoolOne = {
-//   start: 1,
-//   end: 500,
-//   color: getRandomColor(),
-// };
-
 // Generate user data
 const user = new User("Tyler A Johnson", new Date("February 27, 1991"));
 
@@ -75,21 +54,13 @@ option.value = "homes";
 option.textContent = "Homes";
 $("lens-choice").add(option);
 
-// Sync options
-option = document.createElement("option");
-option.value = TimeSync.WEEKSYNC;
-option.textContent = "Week Sync";
-$("time-sync").add(option);
-
-option = document.createElement("option");
-option.value = TimeSync.MONTHSYNC;
-option.textContent = "Month Sync";
-$("time-sync").add(option);
-
-option = document.createElement("option");
-option.value = TimeSync.YEARSYNC;
-option.textContent = "Year Sync";
-$("time-sync").add(option);
+// Populate Sync options from enum
+for (let [key, value] of Object.entries(TimeSync)) {
+  const option = document.createElement("option");
+  option.value = value;
+  option.textContent = key;
+  $("time-sync").add(option);
+}
 
 $("time-sync").onchange = (event) => {
   lifeGrid.timeSync = event.target.value;

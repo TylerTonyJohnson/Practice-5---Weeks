@@ -8,6 +8,7 @@ class Era {
         this.startDate;
         this.endDate;
         this.style;
+        this.name = "Jerry";
     }
 
 }

@@ -21,6 +21,9 @@
   margin: auto;
 }
 
+.date-search {
+  background-color: #abc;
+}
 
 body {
   --background-color: #6D9886;

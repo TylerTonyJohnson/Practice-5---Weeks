@@ -319,7 +319,7 @@ class LifeGrid {
     }
 
     // Calculate days since the root date
-    let days = Math.floor((date.getTime() - rootDate.getTime()) / (1000 * 60 * 60 * 24));
+    let days = Math.floor((date.getTime() - rootDate.getTime()) / (1000 * 60 * 60 * 24))+1;
     console.log(days)
     // If in YEARSYNC, adjust the dates
     if (this.timeSync === TimeSync.YEARSYNC) {
@@ -338,7 +338,7 @@ class LifeGrid {
     // Make sure week before is before
 
     // Make sure week after is after
-    const weekId = Math.floor(days / 7);
+    const weekId = Math.floor(days / 7) + 1;
 
     return weekId;
 

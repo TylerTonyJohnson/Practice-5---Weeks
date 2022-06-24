@@ -4,6 +4,9 @@
 const lifeGrid = new LifeGrid($("life-grid"));
 
 // Body mouse events - mostly cleanup
+document.onmouseleave = (event) => {
+  // lifeGrid.clearTargets();
+}
 
 document.body.onmouseup = (event) => {
   lifeGrid.clearStyle("highlight", "highlight-boundary");
@@ -42,8 +45,16 @@ const user = new User("Tyler A Johnson", new Date("February 27, 1991"));
 
 const age = getWeeksDuration(new Date().getTime() - user.birthdate.getTime());
 
-// Select Options
+// Date search events
+$("date-search").oninput = (event) => {
+  const targetDate = new Date(event.target.value);
+  const selection = lifeGrid.dateToWeek(targetDate, lifeGrid.rootDate);
+  lifeGrid.clearStyle("selected");
+  lifeGrid.addStyle(selection, selection, "selected");
+}
 
+
+// Select Options
 let option = document.createElement("option");
 option.value = "lifespan";
 option.textContent = "Lifespan";

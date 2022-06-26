@@ -12,15 +12,16 @@ class LifeGrid {
     this.mouseUpTarget = null;
     this.mouseOverTarget = null;
     this.hoverLabel = new HoverLabel($("hover-label"));
-    
+
     // Create data structures
     this.rootDate = new Date("February 27, 1991");
     this.eras = [];
+    this.weeks = [];
     this.timeSync = TimeSync.YEARSYNC;
-    
+
     // Setup
     this.createWeeks();
-    this.updateColors();
+    // this.debugColors();
   }
 
   // --- METHODS ---
@@ -30,6 +31,7 @@ class LifeGrid {
       // Create the week
       const week = new Week(id);
       week.setGrid(this);
+      this.weeks.push(week);
 
       // Calculate cell shape
       let left, right, top, bot, wide, tall;
@@ -150,7 +152,9 @@ class LifeGrid {
         this.hoverLabel.updateText(
           this.formatDate(
             this.weekToDate(this.mouseOverTarget.id, this.rootDate)
-          ) + " " + week.id
+          ) +
+            " " +
+            week.id
         );
 
         // Drag behavior
@@ -212,6 +216,47 @@ class LifeGrid {
     }
   };
 
+  addEra = (era) => {
+    this.eras.push(era);
+  };
+
+  render = () => {
+    const era = this.eras[0];
+    console.log(era)
+    console.log(era.startDate)
+
+    const startWeek = this.dateToWeek(era.startDate);
+    const endWeek = this.dateToWeek(era.endDate);
+    
+    this.addColor(startWeek, endWeek, era.style);
+
+  };
+
+  // Method to add an overwrite color to weeks.
+  addColor = (weekId1, weekId2, color) => {
+    // Sort weeks from earliest to latest
+    const firstWeek = Math.min(weekId1, weekId2);
+    const lastWeek = Math.max(weekId1, weekId2);
+
+    // Loop through and apply color
+    for (let i = firstWeek; i <= lastWeek; i++) {
+      this.weeks[i].setColor(color);
+    }
+  };
+
+  // Method to reset the color of a week to the CSS style
+  clearColor = (weekId1, weekId2) => {
+    // Sort weeks from earliest to latest
+    const firstWeek = Math.min(weekId1, weekId2);
+    const lastWeek = Math.max(weekId1, weekId2);
+    
+    // Loop through and reset to CSS default
+    for (let i = firstWeek; i <= lastWeek; i++) {
+      $(i).style.backgroundColor = "";
+    }
+
+  };
+
   // Method to add style to a selection of weeks
   addStyle = (weekId1, weekId2, className) => {
     // Sort weeks from earliest to latest
@@ -253,25 +298,25 @@ class LifeGrid {
   };
 
   // For testing
-  updateColors = () => {
+  debugColors = () => {
     this.clearStyle("debug");
-    Array.from(document.getElementsByClassName("week")).forEach(week => {
+    Array.from(document.getElementsByClassName("week")).forEach((week) => {
       const root = this.rootDate;
       const time = this.weekToDate(week.id, this.rootDate);
 
       // console.log(root.getDate(), time.getDate())
 
       if (
-        time.getMonth() === root.getMonth()
-        && Math.abs(time.getDate() - root.getDate()) < 6
+        time.getMonth() === root.getMonth() &&
+        Math.abs(time.getDate() - root.getDate()) < 6
       ) {
         week.classList.add("debug");
       }
     });
-  }
+  };
 
   formatDate = (date) => {
-      return (    
+    return (
       dayIndex[date.getDay()] +
       " " +
       (date.getMonth() + 1) +
@@ -280,11 +325,10 @@ class LifeGrid {
       "/" +
       date.getFullYear()
     );
-  }
+  };
 
   // Helper functions
-  weekToDate = (weekId, rootDate) => {
-  
+  weekToDate = (weekId, rootDate = this.rootDate) => {
     // Validate weekId
     if (weekId < 1 || weekId > this.weekCount) {
       console.log("Error in week count");
@@ -293,42 +337,47 @@ class LifeGrid {
 
     // Calculate the starting day of the week
     let days = 1 + (weekId - 1) * 7;
-    
+
     // Add days for fudge if needed
     if (this.timeSync === TimeSync.YEARSYNC) {
-
       // Add a day per year to catch up
-      days += (Math.ceil(weekId / 52) - 1);
+      days += Math.ceil(weekId / 52) - 1;
 
       // Add a day for leap years
       const firstYear = rootDate.getFullYear();
       const currentYear = firstYear + (Math.ceil(weekId / 52) - 1);
-      days += this.countLeapYears(firstYear,currentYear);
+      days += this.countLeapYears(firstYear, currentYear);
     }
 
     // Return the date corresponding to the first day of the week
     return new Date(rootDate.getTime() + (days - 1) * (1000 * 60 * 60 * 24));
   };
 
-  dateToWeek = (date, rootDate) => {
-
+  dateToWeek = (date, rootDate = this.rootDate) => {
     // Validate date
-    if (date < this.rootDate || date > this.weekToDate(this.weekCount, this.rootDate)) {
+    if (
+      date < this.rootDate ||
+      date > this.weekToDate(this.weekCount, this.rootDate)
+    ) {
       console.log("Date is out of range");
       return;
     }
 
+    console.log(date);
+
     // Calculate days since the root date
-    let days = Math.floor((date.getTime() - rootDate.getTime()) / (1000 * 60 * 60 * 24))+1;
-    console.log(days)
+    let days =
+      Math.floor(
+        (date.getTime() - rootDate.getTime()) / (1000 * 60 * 60 * 24)
+      ) + 1;
+    console.log(days);
     // If in YEARSYNC, adjust the dates
     if (this.timeSync === TimeSync.YEARSYNC) {
-
       const firstYear = rootDate.getFullYear();
       const currentYear = date.getFullYear();
 
       // Subtract a day per year
-      days -= (currentYear - firstYear);
+      days -= currentYear - firstYear;
       console.log("Subtracting - " + (currentYear - firstYear));
 
       // Subtract a day per leap yer
@@ -341,7 +390,6 @@ class LifeGrid {
     const weekId = Math.floor(days / 7) + 1;
 
     return weekId;
-
   };
 
   // Function to get count of leap years from root date til now.
@@ -359,9 +407,8 @@ class LifeGrid {
 
   // Function to figure out if a year is a leap year (performant)
   isLeapYear = (year) => {
-    return !(year & 3 || year & 15 && !(year % 25));
-  }
-
+    return !(year & 3 || (year & 15 && !(year % 25)));
+  };
 }
 
 // --- ENUMERATION OBJECTS ---
@@ -369,18 +416,10 @@ const TimeSync = {
   YEARSYNC: "year",
   WEEKSYNC: "week",
   MONTHSYNC: "month",
-  CALENDARSYNC: "calendar"
+  CALENDARSYNC: "calendar",
 };
 
-const dayIndex = [
-  "Sun", 
-  "Mon", 
-  "Tue", 
-  "Wed", 
-  "Thu", 
-  "Fri", 
-  "Sat"
-];
+const dayIndex = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const MonthIndex = [
   "Jan",
@@ -394,8 +433,8 @@ const MonthIndex = [
   "Sep",
   "Oct",
   "Nov",
-  "Dec"
-]
+  "Dec",
+];
 
 const Days = {
   MON: "Monday",

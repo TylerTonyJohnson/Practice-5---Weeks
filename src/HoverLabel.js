@@ -23,6 +23,8 @@ class HoverLabel {
 
     // Updaters
     updatePosition = (x, y) => {
+        // The position we feed in should be the position of the thing it's labeling,
+        // that way we can hold the adjustment logic here.
         this.element.style.top = (y - this.offsetY) + "px";
         this.element.style.left = (x + this.offsetX) + "px";
     }

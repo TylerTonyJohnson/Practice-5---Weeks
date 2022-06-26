@@ -19,14 +19,9 @@ class Week {
     // Append the week element to the weekSlot element
     this.weekSlot.appendChild(this.element);
 
-    this.anchor = {
-      top: false,
-      left: false,
-      right: false,
-      bottom: false,
-    };
-
+    // Styling
     this.aspect = null;
+    this.color = "magenta";
   }
 
   // --- METHODS ---
@@ -49,6 +44,16 @@ class Week {
     this.element.classList.add(aspectRatio);
     this.weekSlot.classList.add(aspectRatio);
   };
+
+  setColor = (color) => {
+    this.color = color;
+    this.updateColor();
+  }
+
+  updateColor = () => {
+    this.element.style.backgroundColor = this.color;
+    this.element.style.borderColor = this.color;
+  }
 
 }
 

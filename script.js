@@ -3,6 +3,13 @@
 
 const lifeGrid = new LifeGrid($("life-grid"));
 
+const today = new Date();
+const journey = new Era(lifeGrid.rootDate, today, "teal");
+lifeGrid.addEra(journey);
+console.log(journey);
+lifeGrid.render();
+
+
 // Body mouse events - mostly cleanup
 document.onmouseleave = (event) => {
   // lifeGrid.clearTargets();
@@ -75,7 +82,7 @@ for (let [key, value] of Object.entries(TimeSync)) {
 
 $("time-sync").onchange = (event) => {
   lifeGrid.timeSync = event.target.value;
-  lifeGrid.updateColors();
+  // lifeGrid.debugColors();
 }
 
 // $("time-sync").selectedIndex = 0;

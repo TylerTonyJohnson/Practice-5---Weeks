@@ -4,7 +4,7 @@ class Era {
 
     // --- METHODS ---
     
-    constructor(startDate, endDate, style) { 
+    constructor(startDate, endDate, style, name) { 
         this.startDate = startDate;
         this.endDate = endDate;
         this.style = style;
